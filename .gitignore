@@ -6,15 +6,13 @@ __pycache__/
 uploads/
 工资条拆分文件/
 
-*.xlsx
-*.xls
-
 .DS_Store
 Thumbs.db
-
-.env
-config.py
 
 *.log
 *.tmp
 *.bak
+
+docker-image/
+*.tar
+*.zip
