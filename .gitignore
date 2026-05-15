@@ -12,7 +12,3 @@ Thumbs.db
 *.log
 *.tmp
 *.bak
-
-docker-image/
-*.tar
-*.zip
