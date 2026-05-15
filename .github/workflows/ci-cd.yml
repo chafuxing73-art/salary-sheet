@@ -42,15 +42,6 @@ jobs:
         run: |
           python -m unittest discover -v 2>&1 || echo "No tests found, skipping..."
 
-      - name: Upload test artifacts
-        uses: actions/upload-artifact@v4
-        with:
-          name: test-results
-          path: |
-            *.log
-            reports/
-        if: always()
-
   build-docker:
     name: Build Docker Image
     needs: build-test
@@ -69,11 +60,10 @@ jobs:
           password: ${{ secrets.DOCKERHUB_TOKEN }}
         if: secrets.DOCKERHUB_USERNAME != '' && secrets.DOCKERHUB_TOKEN != ''
 
-      - name: Generate Docker tags
-        id: meta
-        uses: docker/metadata-action@v5
+      - name: Build Docker image
+        uses: docker/build-push-action@v5
         with:
-          images: |
-            ${{ secrets.DOCKERHUB_USERNAME }}/${{ env.IMAGE_NAME }}
-          tags: |
-            type=ref,event
+          context: .
+          platforms: linux/amd64
+          push: ${{ secrets.DOCKERHUB_USERNAME != '' && secrets.DOCKERHUB_TOKEN != '' }}
+          tags: ${{ secrets.DOCKERHUB_USERNAME }}/${{ env.IMAGE_NAME }}:latest
